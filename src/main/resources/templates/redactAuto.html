@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-32x32.png">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="manifest" th:href="@{/site.webmanifest}">
+    <title>CarVia</title>
+</head>
+
+<body>
+<div class="backg" id="backg">
+    <div class="container">
+        <header class="header">
+            <div class="header__inner">
+                <div class="logo">
+                    <a href="" class="logo__link"> <img th:src="@{/images/WhiteLogoText.png}" alt=""> </a>
+                </div>
+                <div class="menu">
+                    <a class="menu__link" href="/">Startseite</a>
+                    <a class="menu__link" href="/auto-catalog">Autokatalog</a>
+                    <a class="menu__link" href="/about-us">Über uns</a>
+                    <a class="menu__link" href="/userLists" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">Benutzern Liste</a>
+                    <a class="menu__link" href="/my-autos" th:if="${#authorization.expression('hasAuthority(''USER'')')}">Meine Autos</a>
+                    <a class="menu__link" href="/add-car" th:if="${#authorization.expression('hasAuthority(''USER'')')}">Auto hinzufügen</a>
+                    <form sec:authorize="isAuthenticated()" class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
+                        <button class="menu__link menu__link--btn" style="color: black">Abmelden</button>
+                    </form>
+                    <div class="text-end" sec:authorize="isAnonymous()">
+                        <a th:href="@{/login}" class="menu__link menu__link--btn">Anmelden</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="logotext" data-aos="fade-down"> <span class="text__inner">Auto redigieren</span> </div>
+    </div>
+</div>
+<form th:action="'/car-update/' + ${car.getId()}" enctype="multipart/form-data" method="post" th:object="${car}">
+    <div class="container4">
+        <div class="auto__sel">
+            <div class="select">
+                <select name="brand" id="brand">
+                    <option selected hidden th:value="${car.getBrand()}" th:text="${car.getBrand()}"></option>
+                    <option value="Toyota">Toyota</option>
+                    <option value="KIA">KIA</option>
+                    <option value="BMW">BMW</option>
+                    <option value="Mercedes-Benz">Mercedes-Benz</option>
+                    <option value="Audi">Audi</option>
+                    <option value="Hyundai">Hyundai</option>
+                    <option value="Honda">Honda</option>
+                    <option value="Lexus">Lexus</option>
+                    <option value="Mazda">Mazda</option>
+                    <option value="Chevrolet">Chevrolet</option>
+                    <option value="Mitsubishi">Mitsubishi</option>
+                    <option value="Nissan">Nissan</option>
+                    <option value="Opel">Opel</option>
+                    <option value="Subaru">Subaru</option>
+                    <option value="Ford">Ford</option>
+                    <option value="Volvo">Volvo</option>
+                    <option value="Skoda">Skoda</option>
+                    <option value="Suzuki">Suzuki</option>
+                    <option value="Renault">Renault</option>
+                    <option value="Renault">Mini</option>
+                    <option value="Land Rover">Land Rover</option>
+                    <option value="Jeep">Jeep</option>
+                    <option value="Infiniti">Infiniti</option>
+                    <option value="Volkswagen">Volkswagen</option>
+                </select>
+            </div>
+        </div>
+        <div class="auto__sel">
+            <div class="form__group2">
+                <input type="text" id="models" name="models" placeholder=" " class="form__input2" th:value="${car.getModel()}">
+                <label for="" class="form__label2">Automodell</label>
+            </div>
+        </div>
+        <div class="auto__sel">
+            <div class="form__group2">
+                <input type="number" id="year" name="year" placeholder=" " class="form__input2" th:value="${car.getYear()}">
+                <label for="" class="form__label2">Baujahr</label>
+            </div>
+        </div>
+        <div class="auto__sel">
+            <div class="select">
+                <select name="carcase" id="carcase">
+                    <option selected hidden th:value="${car.getCarcase()}" th:text="${car.getCarcase()}"></option>
+                    <option value="Sedan">Sedan</option>
+                    <option value="Fließheck 5ft.">Fließheck 5ft.</option>
+                    <option value="Fließheck 3ft.">Fließheck 3ft.</option>
+                    <option value="Liftback">Liftback</option>
+                    <option value="Jeep 5ft.">Jeep 5ft.</option>
+                    <option value="Jeep 3ft.">Jeep 3ft.</option>
+                    <option value="Kombi">Kombi</option>
+                    <option value="Minivan">Minivan</option>
+                    <option value="Lieferwagen">Lieferwagen</option>
+                    <option value="Coupé">Coupé</option>
+                    <option value="Kabriolett">Kabriolett</option>
+                </select>
+            </div>
+        </div>
+        <div class="auto__sel">
+            <div class="select">
+                <select name="fuel_type" id="fuel_type">
+                    <option selected hidden th:value="${car.getFuel_type()}" th:text="${car.getFuel_type()}"></option>
+                    <option value="Benzin">Benzin</option>
+                    <option value="Diesel">Diesel</option>
+                    <option value="Elektro">Elektro</option>
+                    <option value="Hybrid">Hybrid</option>
+                    <option value="HBO">HBO</option>
+                </select>
+            </div>
+        </div>
+        <div class="auto__sel">
+            <div class="select">
+                <select name="drive" id="drive">
+                    <option selected hidden th:value="${car.getDrive()}" th:text="${car.getDrive()}"></option>
+                    <option value="4WD">4WD</option>
+                    <option value="Frontantrieb">Frontantrieb</option>
+                    <option value="Heckantrieb">Heckantrieb</option>
+                </select>
+            </div>
+        </div>
+        <div class="auto__sel">
+            <div class="select">
+                <select name="transmission" id="trasnmission">
+                    <option selected hidden th:value="${car.getTransmission()}" th:text="${car.getTransmission()}"></option>
+                    <option value="Mechanische">Mechanische</option>
+                    <option value="Automatische">Automatische</option>
+                    <option value="Roboter">Roboter</option>
+                    <option value="Variator">Variator</option>
+                </select>
+            </div>
+        </div>
+        <div class="auto__sel">
+            <div class="select">
+                <select name="steering_wheel" id="steering_wheel">
+                    <option selected hidden th:value="${car.getSteering_wheel()}" th:text="${car.getSteering_wheel()}"></option>
+                    <option value="Linke">Linke</option>
+                    <option value="Recht">Recht</option>
+                </select>
+            </div>
+        </div>
+        <div class="auto__sel">
+            <div class="form__group2">
+                <input id="engine_volume" type="number" name="engine_volume" step="0.1" max="6.0" min="0.8" placeholder=" " class="form__input2" th:value="${car.getEngine_volume()}">
+                <label for="" class="form__label2">Hubraum</label>
+            </div>
+        </div>
+        <div class="auto__sel">
+            <div class="form__group2">
+                <input id="horse_power" type="number" name="horse_power" placeholder=" " class="form__input2" th:value="${car.getHorse_power()}">
+                <label for="" class="form__label2">Motorleistung (PS)</label>
+            </div>
+        </div>
+    </div>
+    <div class="container4 mt-3">
+        <div class="auto__sel">
+            <div class="form__group1">
+                <input id="vin" name="vin" type="text" placeholder=" " class="form__input1" th:value="${car.getVin()}">
+                <label for="" class="form__label1">VIN-code</label>
+            </div>
+        </div>
+        <div class="auto__sel">
+            <div class="form__group1">
+                <input id="price" name="price" type="number" placeholder=" " class="form__input1" th:value="${car.getPrice()}">
+                <label for="" class="form__label1">Preis</label>
+            </div>
+        </div>
+    </div>
+    <div class="container4">
+        <div class="auto__sel">
+            <div class="form__group1">
+                <input id="mileage" name="mileage" type="number" placeholder=" " class="form__input1" th:value="${car.getMileage()}">
+                <label for="" class="form__label1">Kilometerstand (km)</label>
+            </div>
+        </div>
+        <div class="auto__sel">
+            <label class="form-label fs-4" for="customFile">Foto hinzufügen</label>
+            <input type="file" name="photo" class="form-control" id="customFile"/>
+        </div>
+    </div>
+    <div class="sel_">Farbe</div>
+    <div class="container4">
+        <div class="checkbox">
+            <input type="radio" name="color" class="checkbox__input" id="checkbox1" value="Weiß" th:checked="${car.getColor.equals('Weiß')} ? 'checked'">
+            <label for="checkbox1" class="checkbox_label">
+                <div class="color"></div> <span>Weiß</span> </label>
+        </div>
+        <div class="checkbox">
+            <input type="radio" name="color" class="checkbox__input" id="checkbox2" value="Silbrig" th:checked="${car.getColor.equals('Silbrig')} ? 'checked'">
+            <label for="checkbox2" class="checkbox_label">
+                <div class="color1"></div> <span>Silbrig</span> </label>
+        </div>
+        <div class="checkbox">
+            <input type="radio" name="color" class="checkbox__input" id="checkbox3" value="Sandfarben" th:checked="${car.getColor.equals('Sandfarben')} ? 'checked'">
+            <label for="checkbox3" class="checkbox_label">
+                <div class="color2"></div> <span>Sandfarben</span> </label>
+        </div>
+        <div class="checkbox">
+            <input type="radio" name="color" class="checkbox__input" id="checkbox4" value="Gelb" th:checked="${car.getColor.equals('Gelb')} ? 'checked'">
+            <label for="checkbox4" class="checkbox_label">
+                <div class="color3"></div> <span>Gelb</span> </label>
+        </div>
+        <div class="checkbox">
+            <input type="radio" name="color" class="checkbox__input" id="checkbox5" value="Goldbraun" th:checked="${car.getColor.equals('Goldbraun')} ? 'checked'">
+            <label for="checkbox5" class="checkbox_label">
+                <div class="color4"></div> <span>Goldbraun</span> </label>
+        </div>
+        <div class="checkbox">
+            <input type="radio" name="color" class="checkbox__input" id="checkbox6" value="Orange" th:checked="${car.getColor.equals('Orange')} ? 'checked'">
+            <label for="checkbox6" class="checkbox_label">
+                <div class="color5"></div> <span>Orange</span> </label>
+        </div>
+        <div class="checkbox">
+            <input type="radio" name="color" class="checkbox__input" id="checkbox7" value="Rosa" th:checked="${car.getColor.equals('Rosa')} ? 'checked'">
+            <label for="checkbox7" class="checkbox_label">
+                <div class="color6"></div> <span>Rosa</span> </label>
+        </div>
+        <div class="checkbox">
+            <input type="radio" name="color" class="checkbox__input" id="checkbox8" value="Rot" th:checked="${car.getColor.equals('Rot')} ? 'checked'">
+            <label for="checkbox8" class="checkbox_label">
+                <div class="color7"></div> <span>Rot</span> </label>
+        </div>
+        <div class="checkbox">
+            <input type="radio" name="color" class="checkbox__input" id="checkbox9" value="Purpurn" th:checked="${car.getColor.equals('Purpurn')} ? 'checked'">
+            <label for="checkbox9" class="checkbox_label">
+                <div class="color8"></div> <span>Purpurn</span> </label>
+        </div>
+        <div class="checkbox">
+            <input type="radio" name="color" class="checkbox__input" id="checkbox10" value="Braun" th:checked="${car.getColor.equals('Braun')} ? 'checked'">
+            <label for="checkbox10" class="checkbox_label">
+                <div class="color9"></div> <span>Braun</span> </label>
+        </div>
+        <div class="checkbox">
+            <input type="radio" name="color" class="checkbox__input" id="checkbox11" value="Blau" th:checked="${car.getColor.equals('Blau')} ? 'checked'">
+            <label for="checkbox11" class="checkbox_label">
+                <div class="color10"></div> <span>Blau</span> </label>
+        </div>
+        <div class="checkbox">
+            <input type="radio" name="color" class="checkbox__input" id="checkbox12" value="Dunkelblau" th:checked="${car.getColor.equals('Dunkelblau')} ? 'checked'">
+            <label for="checkbox12" class="checkbox_label">
+                <div class="color11"></div> <span>Dunkelblau</span> </label>
+        </div>
+        <div class="checkbox">
+            <input type="radio" name="color" class="checkbox__input" id="checkbox13" value="Lila" th:checked="${car.getColor.equals('Lila')} ? 'checked'">
+            <label for="checkbox13" class="checkbox_label">
+                <div class="color12"></div> <span>Lila</span> </label>
+        </div>
+        <div class="checkbox">
+            <input type="radio" name="color" class="checkbox__input" id="checkbox14" value="Grün" th:checked="${car.getColor.equals('Grün')} ? 'checked'">
+            <label for="checkbox14" class="checkbox_label">
+                <div class="color13"></div> <span>Grün</span> </label>
+        </div>
+        <div class="checkbox">
+            <input type="radio" name="color" class="checkbox__input" id="checkbox15" value="Grau" th:checked="${car.getColor.equals('Grau')} ? 'checked'">
+            <label for="checkbox15" class="checkbox_label">
+                <div class="color14"></div> <span>Grau</span> </label>
+        </div>
+        <div class="checkbox">
+            <input type="radio" name="color" class="checkbox__input" id="checkbox16" value="Schwarz" th:checked="${car.getColor.equals('Schwarz')} ? 'checked'">
+            <label for="checkbox16" class="checkbox_label">
+                <div class="color15"></div> <span>Schwarz</span> </label>
+        </div>
+    </div>
+    <div class="sel_">Weitere Informationen</div>
+    <div class="container4">
+        <div class="cen">
+            <div class="textarea_style">
+                <textarea name="dop_info" cols="80" maxlength="200" minlength="10" rows="10" placeholder="Fügen Sie eine Beschreibung hinzu..." class="textarea"></textarea>
+            </div>
+            <div class="sub_btn">
+                <button type="submit" class="_btn">Veränderung</button>
+            </div>
+        </div>
+    </div>
+</form>
+<footer class="footer">
+    <div class="container">
+        <div class="footer__inner">
+            <div class="footer__text"> <span class="footer__logo">
+                   ©OYUN CO.</span>
+                <a href="https://wa.me/996773428201" target="_blank" class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
+                        <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z" /> </svg>
+                </a>
+                <a href="https://www.instagram.com/cephalopagus_/" target="_blank" class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
+                        <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z" /> </svg>
+                </a>
+                <a href="https://t.me/Dastan_Bakaev" class="icon" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-telegram" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.287 5.906c-.778.324-2.334.994-4.666 2.01-.378.15-.577.298-.595.442-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294.26.006.549-.1.868-.32 2.179-1.471 3.304-2.214 3.374-2.23.05-.012.12-.026.166.016.047.041.042.12.037.141-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8.154 8.154 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629.093.06.183.125.27.187.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.426 1.426 0 0 0-.013-.315.337.337 0 0 0-.114-.217.526.526 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09z" /> </svg>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=100022703479947" class="icon" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
+                        <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" /> </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+<script th:src="@{/js/three.min.js}"></script>
+<script th:src="@{/js/vanta.net.min.js}"></script>
+<script th:src="@{/js/stars.js}"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script th:src="@{/js/script.js}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+</body>
+
+</html>
+
+<script>
+$(document).ready(function() {
+  var brand = $('#brand');
+  var model = $('#models');
+  var vin = $('#vin');
+  var carcase = $('#carcase');
+  var fuel_type = $('#fuel_type');
+  var drive = $('#drive');
+  var transmission = $('#transmission');
+  var steering_wheel = $('#steering_wheel');
+  var engine_volume = $('#engine_volume');
+  var horse_power = $('#horse_power');
+  var color = $('#color');
+  var price = $('#price');
+  var year = $('#year');
+  var mileage = $('#mileage');
+  var dop_info = $('#dop_info');
+  var photo = $('#photo');
+
+
+   if (localStorage.getItem('brand')) brand.val(localStorage.getItem('brand'));
+
+   brand.change(function() {
+      localStorage.setItem('brand', brand.val());
+   });
+
+  if (localStorage.getItem('models')) model.val(localStorage.getItem('models'));
+
+  model.keyup(function() {
+    localStorage.setItem('models',model.val());
+  });
+
+  if (localStorage.getItem('vin')) vin.val(localStorage.getItem('vin'));
+
+  vin.keyup(function() {
+    localStorage.setItem('vin',vin.val());
+  });
+
+  if (localStorage.getItem('carcase')) carcase.val(localStorage.getItem('carcase'));
+
+   carcase.change(function() {
+      localStorage.setItem('carcase', carcase.val());
+   });
+
+   if (localStorage.getItem('fuel_type')) fuel_type.val(localStorage.getItem('fuel_type'));
+
+   fuel_type.change(function() {
+      localStorage.setItem('fuel_type', fuel_type.val());
+   });
+
+   if (localStorage.getItem('drive')) drive.val(localStorage.getItem('drive'));
+
+   drive.change(function() {
+      localStorage.setItem('drive', drive.val());
+   });
+
+   if (localStorage.getItem('transmission')) transmission.val(localStorage.getItem('transmission'));
+
+   transmission.change(function() {
+      localStorage.setItem('transmission', transmission.val());
+   });
+
+   if (localStorage.getItem('steering_wheel')) steering_wheel.val(localStorage.getItem('steering_wheel'));
+
+   steering_wheel.change(function() {
+      localStorage.setItem('steering_wheel', steering_wheel.val());
+   });
+
+  if (localStorage.getItem('engine_volume')) engine_volume.val(localStorage.getItem('engine_volume'));
+
+  engine_volume.keyup(function() {
+    localStorage.setItem('engine_volume',engine_volume.val());
+  });
+
+  if (localStorage.getItem('horse_power')) horse_power.val(localStorage.getItem('horse_power'));
+
+  horse_power.keyup(function() {
+    localStorage.setItem('horse_power',horse_power.val());
+  });
+
+  if (localStorage.getItem('price')) price.val(localStorage.getItem('price'));
+
+  price.keyup(function() {
+    localStorage.setItem('price',price.val());
+  });
+
+  if (localStorage.getItem('year')) year.val(localStorage.getItem('year'));
+
+  year.keyup(function() {
+    localStorage.setItem('year',year.val());
+  });
+
+  if (localStorage.getItem('mileage')) mileage.val(localStorage.getItem('mileage'));
+
+  mileage.keyup(function() {
+    localStorage.setItem('mileage',mileage.val());
+  });
+
+  if (localStorage.getItem('mileage')) mileage.val(localStorage.getItem('mileage'));
+
+  mileage.keyup(function() {
+    localStorage.setItem('mileage',mileage.val());
+  });
+
+  if (localStorage.getItem('dop_info')) dop_info.val(localStorage.getItem('dop_info'));
+
+  dop_info.keyup(function() {
+    localStorage.setItem('dop_info',dop_info.val());
+  });
+
+
+});
+</script>

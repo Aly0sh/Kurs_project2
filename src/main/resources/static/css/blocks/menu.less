@@ -1,0 +1,57 @@
+// main: ../style.less
+.menu{
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+
+.menu__link{
+    font-size: 1rem;
+    color: @white;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-decoration: none;
+    position: relative;
+    margin-left: 2rem;
+
+    //border: 2px solid transparent;
+    border-radius: 20px;
+    //padding: 0.66rem 2rem;
+
+    &:after{
+        content: "";
+        display: block;
+        width: 0;
+        height: 2px;
+        background-color: @white;
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        z-index: 1;
+
+        transition: width 0.3s ease-out;
+
+
+
+    }
+    &:hover:not(.menu__link--btn){
+        &:after{
+            width: 100%;
+        }
+    }
+    &--btn{
+        padding: 0.66rem;
+        border: 2px solid @white;
+        border-radius: 20px;
+
+        transition: background-color, color 0.3s ease-out;
+        &:hover{
+           background-color: @white;
+            color: @black;
+            border: 2px solid @gray-light;
+
+        }
+    }
+}
+
+

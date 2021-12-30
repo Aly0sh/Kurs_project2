@@ -1,0 +1,43 @@
+// main: ../style.less
+.logotext{
+    text-align: center;
+    margin-top: 3rem;
+    color: @white;
+}
+.text__inner{
+    font-size: 6rem;
+    letter-spacing: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: @white;
+}
+.text__link{
+    font-size: 3rem;
+    color: @white;
+    text-transform: uppercase;
+    text-decoration: none;
+    position: relative;
+    border-radius: 20px;
+
+    &:after{
+        content: "";
+        display: block;
+        width: 0;
+        height: 2px;
+        background-color: @white;
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        z-index: 1;
+
+        transition: width 0.3s ease-out;
+
+
+
+    }
+    &:hover{
+        &:after{
+            width: 100%;
+        }
+    }
+}

@@ -1,0 +1,30 @@
+// compress: true
+@import "vars";
+html{
+    font-size: 15px;
+}
+body {
+    margin: auto;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    color: @black;
+
+    &:.no-scroll{
+        overflow: hidden;
+    }
+}
+*,
+*:before,
+*:after{
+    box-sizing: border-box;
+}
+
+/*Blocks*/
+@import "blocks/container";
+@import "blocks/header";
+@import "blocks/backg";
+@import "blocks/logo";
+@import "blocks/menu";
+@import "blocks/logotext";
+@import "blocks/container2";
+@import "blocks/list";
